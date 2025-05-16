@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+    db:
+        container_name: postgresql
+        image: postgres:16
+        restart: always
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        ports:
+            - ${POSTGRES_PORT}:5432
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - backend
+        hostname: ${POSTGRES_HOST}
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.5'
+                    memory: 1G
+
+    redis:
+        container_name: redis
+        image: redis:7.2
+        restart: always
+        ports:
+            - ${REDIS_PORT}:6379
+        volumes:
+            - redis_data:/data
+        command: redis-server --requirepass ${REDIS_PASSWORD}
+        environment:
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
+        networks:
+            - backend
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.25'
+                    memory: 512M
+
+    redis-insight:
+        container_name: redis-insight
+        image: redis/redisinsight:latest
+        restart: always
+        ports:
+            - ${REDIS_INSIGHT_PORT:-5540}:5540
+        volumes:
+            - redis_insight_data:/data
+        networks:
+            - backend
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.25'
+                    memory: 512M
+        depends_on:
+            - redis
+
+volumes:
+    postgres_data:
+    redis_data:
+    redis_insight_data:
+
+networks:
+    backend:
+        driver: bridge
