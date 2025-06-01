@@ -1,12 +1,14 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { RedisStore } from 'connect-redis';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
+import { I18nService } from 'nestjs-i18n';
 
 import { CoreModule } from '@/core/core.module';
 import { RedisService } from '@/core/redis/redis.service';
+import { I18nValidationPipe } from '@/shared/pipes/i18n-validation.pipe';
 import { IS_DEV_ENV } from '@/shared/utils/is-dev.util';
 import { ms, type StringValue } from '@/shared/utils/ms.util';
 import { parseBool } from '@/shared/utils/parse-bool.util';
@@ -14,16 +16,21 @@ import { parseBool } from '@/shared/utils/parse-bool.util';
 async function bootstrap() {
 	const app = await NestFactory.create(CoreModule, {
 		logger: IS_DEV_ENV
-			? ['log', 'error', 'warn', 'debug']
-			: ['error', 'warn']
+			? ['log', 'error', 'warn', 'verbose', 'debug']
+			: ['error', 'warn', 'log']
 	});
+
+	const logger = new Logger('NestApplication');
 
 	const config = app.get(ConfigService);
 	const redis = app.get(RedisService);
 
 	app.use(cookieParser(config.getOrThrow<string>('COOKIE_SECRET')));
 
-	app.useGlobalPipes(new ValidationPipe({ transform: true }));
+	const i18nService =
+		app.get<I18nService<Record<string, unknown>>>(I18nService);
+
+	app.useGlobalPipes(new I18nValidationPipe(i18nService));
 
 	app.use(
 		session({
@@ -54,6 +61,8 @@ async function bootstrap() {
 	});
 
 	await app.listen(config.getOrThrow<number>('APPLICATION_PORT') ?? 4000);
+
+	logger.log(`Application is running on ${await app.getUrl()}`);
 }
 
 void bootstrap();

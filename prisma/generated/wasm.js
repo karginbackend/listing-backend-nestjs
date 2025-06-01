@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.7.0
- * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+ * Prisma Client JS version: 6.8.2
+ * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
  */
 Prisma.prismaVersion = {
-  client: "6.7.0",
-  engine: "3cff47a7f5d65c3ea74883f1d736e41d68ce91ed"
+  client: "6.8.2",
+  engine: "2060c79ba17c6bb9f5823312b6f6b7f4a845738e"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -120,16 +120,46 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.UserScalarFieldEnum = {
+exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  firstName: 'firstName',
-  lastName: 'lastName',
   email: 'email',
   phoneNumber: 'phoneNumber',
+  password: 'password',
   avatarUrl: 'avatarUrl',
-  password: 'password'
+  isEmailVerified: 'isEmailVerified',
+  rating: 'rating',
+  role: 'role',
+  isActive: 'isActive'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  accountId: 'accountId'
+};
+
+exports.Prisma.AgencyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  socialMediaLinks: 'socialMediaLinks',
+  bannerUrl: 'bannerUrl',
+  address: 'address',
+  website: 'website',
+  agencyType: 'agencyType',
+  isVerified: 'isVerified',
+  verificationStatus: 'verificationStatus',
+  accountId: 'accountId'
+};
+
+exports.Prisma.SocialAccountScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  provider: 'provider',
+  providerId: 'providerId',
+  accountId: 'accountId'
 };
 
 exports.Prisma.SortOrder = {
@@ -146,10 +176,35 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Roles = exports.$Enums.Roles = {
+  USER: 'USER',
+  AGENCY: 'AGENCY',
+  MODERATOR: 'MODERATOR',
+  ADMIN: 'ADMIN',
+  SUPERADMIN: 'SUPERADMIN'
+};
 
+exports.AgencyType = exports.$Enums.AgencyType = {
+  ONLINE: 'ONLINE',
+  OFFLINE: 'OFFLINE'
+};
+
+exports.VerificationStatus = exports.$Enums.VerificationStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+exports.SocialProvider = exports.$Enums.SocialProvider = {
+  GOOGLE: 'GOOGLE',
+  FACEBOOK: 'FACEBOOK'
+};
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  Account: 'Account',
+  User: 'User',
+  Agency: 'Agency',
+  SocialAccount: 'SocialAccount'
 };
 
 /**

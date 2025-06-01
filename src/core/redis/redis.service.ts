@@ -16,9 +16,6 @@ export class RedisService
 
 	constructor(configService: ConfigService) {
 		super(configService.getOrThrow<string>('REDIS_URI'));
-		this.on('error', (error) => {
-			this.logger.error('Redis connection error:', error.message);
-		});
 	}
 
 	getClient(): Redis {
@@ -30,7 +27,9 @@ export class RedisService
 			await this.ping();
 			this.logger.log('Connected to Redis ✅');
 		} catch (error) {
-			this.logger.error('Failed to connect to Redis ❌', error);
+			const message =
+				error instanceof Error ? error.message : String(error);
+			this.logger.error('Failed connect to Redis ❌', message);
 			throw error;
 		}
 	}

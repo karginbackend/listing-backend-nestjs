@@ -1,0 +1,52 @@
+{
+	"createUser": {
+		"fullName": {
+			"isString": "Full name must be a string",
+			"minLength": "Full name must be at least 3 characters long",
+			"maxLength": "Full name is too long"
+		},
+		"email": {
+			"isEmail": "Invalid email format",
+			"maxLength": "Email is too long"
+		},
+		"password": {
+			"isString": "Password must be a string",
+			"minLength": "Password must be at least 8 characters long",
+			"matches": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+		},
+		"phoneNumber": {
+			"isPhoneNumber": "Invalid phone number format"
+		}
+	},
+	"createAgency": {
+		"name": {
+			"isString": "Name must be a string",
+			"minLength": "Business name must be at least 3 characters long",
+			"maxLength": "Name is too long"
+		},
+		"phoneNumber": {
+			"isPhoneNumber": "Invalid phone number format"
+		},
+		"businessEmail": {
+			"isEmail": "Invalid email format",
+			"maxLength": "Email is too long"
+		},
+		"agencyType": {
+			"isEnum": "Invalid agency type"
+		},
+		"password": {
+			"isString": "Password must be a string",
+			"minLength": "Password must be at least 8 characters long",
+			"matches": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+		}
+	},
+	"login": {
+		"identifier": {
+			"isEmail": "Invalid email format",
+			"isPhoneNumber": "Invalid phone number format"
+		},
+		"password": {
+			"isNotEmpty": "Password is required"
+		}
+	}
+}

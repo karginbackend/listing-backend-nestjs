@@ -13,17 +13,19 @@ export class PrismaService
 {
 	private readonly logger = new Logger(PrismaService.name);
 
-	async onModuleInit() {
+	async onModuleInit(): Promise<void> {
 		try {
 			await this.$connect();
 			this.logger.log('Connected to the database ✅');
 		} catch (error) {
-			this.logger.error('Error connecting to the database ❌', error);
+			const message =
+				error instanceof Error ? error.message : String(error);
+			this.logger.error('Error connecting to the database ❌', message);
 			throw error;
 		}
 	}
 
-	async onModuleDestroy() {
+	async onModuleDestroy(): Promise<void> {
 		await this.$disconnect();
 		this.logger.log('Disconnected from the database ❌');
 	}

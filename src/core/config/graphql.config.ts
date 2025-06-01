@@ -3,12 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import type { Request, Response } from 'express';
 import { join } from 'node:path';
 
+import { GqlContext } from '@/shared/types/gql-context.types';
 import { isDev } from '@/shared/utils/is-dev.util';
-
-interface GraphQLContext {
-	req: Request;
-	res: Response;
-}
 
 export function getGraphQLConfig(
 	configService: ConfigService
@@ -26,7 +22,7 @@ export function getGraphQLConfig(
 		}: {
 			req: Request;
 			res: Response;
-		}): GraphQLContext => ({
+		}): GqlContext => ({
 			req,
 			res
 		})

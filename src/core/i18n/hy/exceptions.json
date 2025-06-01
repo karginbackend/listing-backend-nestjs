@@ -1,0 +1,15 @@
+{
+	"common": {
+		"userAlreadyExists": "Տվյալ օգտատերը գրանցված է",
+		"agencyAlreadyExists": "Տվյալ գործակալությունը գրանցված է",
+		"agencyNameExists": "Տվյալ անունով գործակալությունը արդեն գրանցված է",
+		"agencyEmailExists": "Տվյալ էլ․ հացեով գործակալությունը արդեն գրանցված է",
+		"agencyPhoneExists": "Տվյալ հեռախոսահամարով գործակալությունը արդեն գրանցված է",
+		"noSession": "Արգելված է",
+		"insufficientPermissions": "Դուք չունեք բավարար իրավասություններ"
+	},
+	"sessions": {
+		"noSession": "Արգելված է",
+		"invalidSession": "Արգելված է"
+	}
+}
