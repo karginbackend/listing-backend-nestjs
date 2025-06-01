@@ -91,4 +91,23 @@ export class SessionService {
 			});
 		});
 	}
+
+	public async checkAuth(req: Request): Promise<boolean> {
+		try {
+			if (!req.session) {
+				return false;
+			}
+
+			if (!req.session?.accountId) {
+				return false;
+			}
+
+			req.session.touch();
+
+			return true;
+		} catch (error) {
+			this.logger.error('Error checking auth:', error);
+			throw new InternalServerErrorException('Error checking auth');
+		}
+	}
 }

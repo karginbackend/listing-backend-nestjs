@@ -55,6 +55,7 @@ type Mutation {
 }
 
 type Query {
+  checkAuth: Boolean!
   findAgencyAccount: AccountModel!
   findAllAccounts: [AccountModel!]!
   findUserAccount: AccountModel!

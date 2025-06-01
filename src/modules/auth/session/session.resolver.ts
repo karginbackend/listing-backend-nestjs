@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { AccountModel } from '@/modules/auth/account/models/account.model';
 import type { GqlContext } from '@/shared/types/gql-context.types';
@@ -21,5 +21,10 @@ export class SessionResolver {
 	@Mutation(() => Boolean, { name: 'logout' })
 	public async logout(@Context() { req }: GqlContext): Promise<boolean> {
 		return this.sessionService.logout(req);
+	}
+
+	@Query(() => Boolean, { name: 'checkAuth' })
+	public async checkAuth(@Context() { req }: GqlContext): Promise<boolean> {
+		return this.sessionService.checkAuth(req);
 	}
 }

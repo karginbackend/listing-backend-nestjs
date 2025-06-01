@@ -9,10 +9,8 @@ import { CreateUserInput } from './inputs/create-user.input';
 
 @Injectable()
 export class AccountService {
-	// Logger
 	private readonly logger = new Logger(AccountService.name);
 
-	// Constructor
 	public constructor(private readonly prismaService: PrismaService) {}
 
 	private async checkAccountExists(
@@ -32,7 +30,6 @@ export class AccountService {
 		if (exists) throw new ConflictException('Account already exists');
 	}
 
-	// Method for create user
 	public async createUser(input: CreateUserInput): Promise<boolean> {
 		const { email, fullName, password, phoneNumber } = input;
 
