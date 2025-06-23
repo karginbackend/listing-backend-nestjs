@@ -4,14 +4,19 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 
-import { getGraphQLConfig } from '@/core/config/graphql.config';
-import { PrismaModule } from '@/core/database/prisma/prisma.module';
-import { AccountModule } from '@/modules/auth/account/account.module';
-import { SessionModule } from '@/modules/auth/session/session.module';
-import { IS_DEV_ENV } from '@/shared/utils/is-dev.util';
+import {
+	AccountModule,
+	CategoryGroupModule,
+	CategoryModule,
+	FileModule,
+	ListingModule,
+	SessionModule
+} from '@/modules';
+import { IS_DEV_ENV } from '@/shared/utils';
 
-import { getI18nConfig } from './config/i18n.config';
-import { RedisModule } from './redis/redis.module';
+import { getGraphQLConfig, getI18nConfig } from './config';
+import { PrismaModule } from './database';
+import { RedisModule } from './redis';
 
 @Module({
 	imports: [
@@ -34,7 +39,11 @@ import { RedisModule } from './redis/redis.module';
 		PrismaModule,
 		RedisModule,
 		AccountModule,
-		SessionModule
+		SessionModule,
+		CategoryModule,
+		CategoryGroupModule,
+		ListingModule,
+		FileModule
 	]
 })
 export class CoreModule {}

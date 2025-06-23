@@ -4,14 +4,11 @@ import { NestFactory } from '@nestjs/core';
 import { RedisStore } from 'connect-redis';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
-import { I18nService } from 'nestjs-i18n';
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
 
 import { CoreModule } from '@/core/core.module';
-import { RedisService } from '@/core/redis/redis.service';
-import { I18nValidationPipe } from '@/shared/pipes/i18n-validation.pipe';
-import { IS_DEV_ENV } from '@/shared/utils/is-dev.util';
-import { ms, type StringValue } from '@/shared/utils/ms.util';
-import { parseBool } from '@/shared/utils/parse-bool.util';
+import { RedisService } from '@/core/redis';
+import { IS_DEV_ENV, ms, parseBool, type StringValue } from '@/shared/utils';
 
 async function bootstrap() {
 	const app = await NestFactory.create(CoreModule, {
@@ -27,10 +24,11 @@ async function bootstrap() {
 
 	app.use(cookieParser(config.getOrThrow<string>('COOKIE_SECRET')));
 
-	const i18nService =
-		app.get<I18nService<Record<string, unknown>>>(I18nService);
-
-	app.useGlobalPipes(new I18nValidationPipe(i18nService));
+	// app.useGlobalPipes(
+	// 	new I18nValidationPipe({
+	// 		transform: true
+	// 	})
+	// );
 
 	app.use(
 		session({
@@ -54,10 +52,14 @@ async function bootstrap() {
 		})
 	);
 
+	app.use(
+		'/graphql',
+		graphqlUploadExpress({ maxFileSize: 10 * 1024 * 1024, maxFiles: 10 })
+	);
+
 	app.enableCors({
 		origin: config.getOrThrow<string>('CORS_ORIGIN'),
-		credentials: true,
-		exposedHeaders: ['set-cookie']
+		credentials: true
 	});
 
 	await app.listen(config.getOrThrow<number>('APPLICATION_PORT') ?? 4000);

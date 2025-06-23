@@ -17,9 +17,32 @@ type AccountModel {
 }
 
 type AgencyModel {
-  agencyType: String!
+  address: String
+  agencyType: AgencyType!
+  bannerUrl: String
   id: ID!
+  isVerified: Boolean!
   name: String!
+  socialMediaLinks: [String!]!
+  verificationStatus: VerificationStatus!
+  website: String
+}
+
+"""The type of an agency"""
+enum AgencyType {
+  OFFLINE
+  ONLINE
+}
+
+type Category {
+  description: String!
+  id: ID!
+  title: String!
+}
+
+type CategoryGroup {
+  id: ID!
+  title: String!
 }
 
 input CreateAgencyInput {
@@ -28,6 +51,24 @@ input CreateAgencyInput {
   name: String!
   password: String!
   phoneNumber: String!
+}
+
+input CreateCategoryGroupInput {
+  slug: String!
+  title_en: String!
+  title_hy: String!
+  title_ru: String!
+}
+
+input CreateCategoryInput {
+  description_en: String!
+  description_hy: String!
+  description_ru: String!
+  groupId: String!
+  slug: String!
+  title_en: String!
+  title_hy: String!
+  title_ru: String!
 }
 
 input CreateUserInput {
@@ -48,10 +89,17 @@ input LoginInput {
 }
 
 type Mutation {
+  createCategory(data: CreateCategoryInput!): Category!
+  createCategoryGroup(data: CreateCategoryGroupInput!): CategoryGroup!
+  deleteCategory(id: String!): Boolean!
+  deleteCategoryGroup(id: String!): CategoryGroup!
   login(data: LoginInput!): AccountModel!
   logout: Boolean!
   registerAgency(data: CreateAgencyInput!): Boolean!
   registerUser(data: CreateUserInput!): Boolean!
+  updateAccount(data: UpdateAccountInput!): AccountModel!
+  updateCategory(data: UpdateCategoryInput!, id: String!): Category!
+  updateCategoryGroup(data: CreateCategoryGroupInput!): CategoryGroup!
 }
 
 type Query {
@@ -59,9 +107,36 @@ type Query {
   findAgencyAccount: AccountModel!
   findAllAccounts: [AccountModel!]!
   findUserAccount: AccountModel!
+  getAllCategories: [Category!]!
+  getAllCategoryGroups: [CategoryGroup!]!
+  getCategoryBySlug(slug: String!): Category!
+  getCategoryGroupById(id: String!): CategoryGroup!
+}
+
+input UpdateAccountInput {
+  avatarUrl: String
+  email: String
+  phoneNumber: String
+}
+
+input UpdateCategoryInput {
+  description_en: String!
+  description_hy: String!
+  description_ru: String!
+  slug: String!
+  title_en: String!
+  title_hy: String!
+  title_ru: String!
 }
 
 type UserModel {
   fullName: String!
   id: ID!
+}
+
+"""The verification status of an agency"""
+enum VerificationStatus {
+  APPROVED
+  PENDING
+  REJECTED
 }

@@ -1,0 +1,11 @@
+{
+	"validation": {
+		"identifier": {
+			"isEmail": "Էլ․ հասցեն սխալ ձևաչափ ունի",
+			"isPhoneNumber": "Հեռախոսահամարը սխալ ձևաչափ ունի"
+		}
+	},
+	"exception": {
+		"invalidSession": "Անվավեր սեսիա"
+	}
+}

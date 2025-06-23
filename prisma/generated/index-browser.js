@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.8.2
- * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
+ * Prisma Client JS version: 6.10.1
+ * Query Engine version: 9b628578b3b7cae625e8c927178f15a170e74a9c
  */
 Prisma.prismaVersion = {
-  client: "6.8.2",
-  engine: "2060c79ba17c6bb9f5823312b6f6b7f4a845738e"
+  client: "6.10.1",
+  engine: "9b628578b3b7cae625e8c927178f15a170e74a9c"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -129,6 +129,8 @@ exports.Prisma.AccountScalarFieldEnum = {
   password: 'password',
   avatarUrl: 'avatarUrl',
   isEmailVerified: 'isEmailVerified',
+  isSubscribed: 'isSubscribed',
+  subscriptionType: 'subscriptionType',
   rating: 'rating',
   role: 'role',
   isActive: 'isActive'
@@ -162,9 +164,73 @@ exports.Prisma.SocialAccountScalarFieldEnum = {
   accountId: 'accountId'
 };
 
+exports.Prisma.CategoryGroupScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  slug: 'slug',
+  title_en: 'title_en',
+  title_ru: 'title_ru',
+  title_hy: 'title_hy',
+  icon: 'icon'
+};
+
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  slug: 'slug',
+  title_en: 'title_en',
+  title_hy: 'title_hy',
+  title_ru: 'title_ru',
+  description_en: 'description_en',
+  description_hy: 'description_hy',
+  description_ru: 'description_ru',
+  groupId: 'groupId'
+};
+
+exports.Prisma.ListingScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  title: 'title',
+  description: 'description',
+  price: 'price',
+  currency: 'currency',
+  address: 'address',
+  imageUrls: 'imageUrls',
+  area: 'area',
+  buildingType: 'buildingType',
+  status: 'status',
+  priceHistory: 'priceHistory',
+  specificFields: 'specificFields',
+  isFavorite: 'isFavorite',
+  isTop: 'isTop',
+  locationId: 'locationId',
+  categoryId: 'categoryId',
+  accountId: 'accountId'
+};
+
+exports.Prisma.LocationScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  country: 'country',
+  city: 'city'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -176,7 +242,19 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.Roles = exports.$Enums.Roles = {
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+exports.SubscriptionType = exports.$Enums.SubscriptionType = {
+  FREE: 'FREE',
+  PRO: 'PRO',
+  PARTNER: 'PARTNER'
+};
+
+exports.Role = exports.$Enums.Role = {
   USER: 'USER',
   AGENCY: 'AGENCY',
   MODERATOR: 'MODERATOR',
@@ -200,11 +278,21 @@ exports.SocialProvider = exports.$Enums.SocialProvider = {
   FACEBOOK: 'FACEBOOK'
 };
 
+exports.ListingStatus = exports.$Enums.ListingStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
 exports.Prisma.ModelName = {
   Account: 'Account',
   User: 'User',
   Agency: 'Agency',
-  SocialAccount: 'SocialAccount'
+  SocialAccount: 'SocialAccount',
+  CategoryGroup: 'CategoryGroup',
+  Category: 'Category',
+  Listing: 'Listing',
+  Location: 'Location'
 };
 
 /**

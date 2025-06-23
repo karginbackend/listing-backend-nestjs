@@ -12,29 +12,23 @@ export class CreateUserInput {
 	@Field()
 	@IsString()
 	@IsNotEmpty()
-	@Length(3, 100, {
-		message: 'validations.createUser.fullName.length'
-	})
+	@Length(3, 100)
 	public fullName!: string;
 
 	@Field()
 	@IsString()
 	@IsNotEmpty()
-	@IsEmail({}, { message: 'validations.createUser.email.isEmail' })
-	@Length(1, 254, { message: 'validations.createUser.email.maxLength' })
+	@IsEmail()
+	@Length(1, 254)
 	public email!: string;
 
 	@Field()
 	@IsString()
 	@IsNotEmpty()
-	@Length(8, 100, {
-		message: 'validations.createUser.password.minLength'
-	})
+	@Length(8, 100)
 	public password!: string;
 
 	@Field()
-	@IsPhoneNumber(undefined, {
-		message: 'validations.createUser.phoneNumber.isPhoneNumber'
-	})
+	@IsPhoneNumber()
 	public phoneNumber!: string;
 }

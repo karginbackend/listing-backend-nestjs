@@ -9,7 +9,7 @@ export class LoginInput {
 	public emailOrPhoneNumber!: string;
 
 	@Field()
-	@IsString({ message: 'validations.login.password.isString' })
-	@IsNotEmpty({ message: 'validations.login.password.isNotEmpty' })
+	@IsString()
+	@IsNotEmpty()
 	public password!: string;
 }

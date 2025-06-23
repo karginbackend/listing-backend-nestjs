@@ -1,0 +1,6 @@
+{
+	"exception": {
+		"noSession": "No session found",
+		"insufficientPermissions": "Insufficient permissions"
+	}
+}

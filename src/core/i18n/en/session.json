@@ -1,0 +1,11 @@
+{
+	"validation": {
+		"identifier": {
+			"isEmail": "Invalid email or phone number format",
+			"isPhoneNumber": "Invalid email or phone number format"
+		}
+	},
+	"exception": {
+		"invalidSession": "Invalid session"
+	}
+}

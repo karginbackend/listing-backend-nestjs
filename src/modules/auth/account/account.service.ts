@@ -1,11 +1,14 @@
 import { ConflictException, Injectable, Logger } from '@nestjs/common';
-import { Account, Agency, User } from '@prisma/generated';
+import { Account, Agency, Role, User } from '@prisma/generated';
 import { hash } from 'argon2';
 
-import { PrismaService } from '@/core/database/prisma/prisma.service';
+import { PrismaService } from '@/core/database';
 
-import { CreateAgencyInput } from './inputs/create-agency.input';
-import { CreateUserInput } from './inputs/create-user.input';
+import {
+	CreateAgencyInput,
+	CreateUserInput,
+	UpdateAccountInput
+} from './inputs';
 
 @Injectable()
 export class AccountService {
@@ -27,7 +30,19 @@ export class AccountService {
 				]
 			}
 		});
-		if (exists) throw new ConflictException('Account already exists');
+
+		if (exists) {
+			const conflictField =
+				exists.email === email
+					? 'email'
+					: exists.phoneNumber === phoneNumber
+						? 'phone'
+						: 'agency name';
+
+			throw new ConflictException(
+				`Account with this ${conflictField} already exists`
+			);
+		}
 	}
 
 	public async createUser(input: CreateUserInput): Promise<boolean> {
@@ -35,7 +50,9 @@ export class AccountService {
 
 		await this.checkAccountExists(email, phoneNumber);
 
-		const passwordHash = (await hash(password)) as string;
+		const passwordHash: string = await hash(password);
+
+		this.logger.log(`Creating account: email=${email}`);
 
 		await this.prismaService.$transaction(async (tx) => {
 			const account = await tx.account.create({
@@ -46,12 +63,18 @@ export class AccountService {
 				}
 			});
 
-			await tx.user.create({
+			this.logger.log(`Account created (user): id=${account.id}`);
+
+			const user = await tx.user.create({
 				data: {
 					fullName,
 					accountId: account.id
 				}
 			});
+
+			this.logger.log(
+				`User (id=${user.id}) linked to account: fullName=${fullName}`
+			);
 		});
 
 		return true;
@@ -62,7 +85,9 @@ export class AccountService {
 
 		await this.checkAccountExists(email, phoneNumber, name);
 
-		const passwordHash = await hash(password);
+		const passwordHash: string = await hash(password);
+
+		this.logger.log(`Creating account: email=${email}, agencyName=${name}`);
 
 		await this.prismaService.$transaction(async (tx) => {
 			const account = await tx.account.create({
@@ -70,31 +95,55 @@ export class AccountService {
 					email,
 					password: passwordHash,
 					phoneNumber,
-					role: 'AGENCY'
+					role: Role.AGENCY
 				}
 			});
+			this.logger.log(`Account created (agency): id=${account.id}`);
 
-			await tx.agency.create({
+			const agency = await tx.agency.create({
 				data: {
 					name,
 					agencyType,
 					accountId: account.id
 				}
 			});
+			this.logger.log(
+				`Agency (id=${agency.id}) linked to account: id=${account.id}`
+			);
 		});
 
 		return true;
 	}
 
+	public async updateAccount(
+		id: string,
+		input: UpdateAccountInput
+	): Promise<Account> {
+		const { avatarUrl, email, phoneNumber } = input;
+
+		this.logger.log(`Updating account: id=${id}`);
+
+		const updatedAccount = await this.prismaService.account.update({
+			where: { id },
+			data: {
+				email,
+				phoneNumber,
+				avatarUrl
+			}
+		});
+
+		this.logger.log(`Account updated: id=${id}`);
+
+		return updatedAccount;
+	}
+
 	public async getAccounts(): Promise<Account[]> {
-		return (
-			this.prismaService.account.findMany({
-				include: {
-					user: true,
-					agency: true
-				}
-			}) || []
-		);
+		return this.prismaService.account.findMany({
+			include: {
+				user: true,
+				agency: true
+			}
+		});
 	}
 
 	public async getUserAccountById(id: string): Promise<Account> {

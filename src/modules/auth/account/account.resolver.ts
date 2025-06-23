@@ -1,13 +1,14 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { AuthWithRoles } from '@/shared/decorators/auth-role.decorator';
-import { Authorization } from '@/shared/decorators/auth.decorator';
-import { Authorized } from '@/shared/decorators/authorized.decorator';
+import { Authorization, Authorized, AuthWithRoles } from '@/shared/decorators';
 
 import { AccountService } from './account.service';
-import { CreateAgencyInput } from './inputs/create-agency.input';
-import { CreateUserInput } from './inputs/create-user.input';
-import { AccountModel } from './models/account.model';
+import {
+	CreateAgencyInput,
+	CreateUserInput,
+	UpdateAccountInput
+} from './inputs';
+import { AccountModel } from './models';
 
 @Resolver(() => AccountModel)
 export class AccountResolver {
@@ -41,6 +42,14 @@ export class AccountResolver {
 		@Args('data') input: CreateAgencyInput
 	): Promise<boolean> {
 		return this.accountService.createAgency(input);
+	}
+
+	@Mutation(() => AccountModel, { name: 'updateAccount' })
+	public async updateAccount(
+		@Authorized('id') accountId: string,
+		@Args('data') input: UpdateAccountInput
+	): Promise<AccountModel> {
+		return this.accountService.updateAccount(accountId, input);
 	}
 
 	@AuthWithRoles('MODERATOR', 'ADMIN', 'SUPERADMIN')

@@ -12,18 +12,18 @@ export interface GoogleProfile {
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-	constructor(private configService: ConfigService) {
+	public constructor(private configService: ConfigService) {
 		super({
 			clientID: configService.getOrThrow<string>('GOOGLE_CLIENT_ID'),
 			clientSecret: configService.getOrThrow<string>(
 				'GOOGLE_CLIENT_SECRET'
 			),
-			callbackURL: `${configService.getOrThrow<string>('BASE_URL')}/auth/google/callback`,
+			callbackURL: `${configService.getOrThrow<string>('APPLICATION_URL')}/auth/google/callback`,
 			scope: ['email', 'profile']
 		});
 	}
 
-	async validate(
+	public async validate(
 		accessToken: string,
 		refreshToken: string,
 		profile: GoogleProfile,

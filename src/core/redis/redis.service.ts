@@ -14,15 +14,15 @@ export class RedisService
 {
 	private readonly logger = new Logger(RedisService.name);
 
-	constructor(configService: ConfigService) {
+	public constructor(configService: ConfigService) {
 		super(configService.getOrThrow<string>('REDIS_URI'));
 	}
 
-	getClient(): Redis {
+	public getClient(): Redis {
 		return this;
 	}
 
-	async onModuleInit(): Promise<void> {
+	public async onModuleInit(): Promise<void> {
 		try {
 			await this.ping();
 			this.logger.log('Connected to Redis ✅');
@@ -34,7 +34,7 @@ export class RedisService
 		}
 	}
 
-	async onModuleDestroy(): Promise<void> {
+	public async onModuleDestroy(): Promise<void> {
 		await this.quit();
 		this.logger.warn('Disconnected from Redis ❌');
 	}

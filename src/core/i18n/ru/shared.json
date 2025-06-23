@@ -1,0 +1,6 @@
+{
+	"exception": {
+		"noSession": "Сессия не найдена",
+		"insufficientPermissions": "Недостаточно прав"
+	}
+}

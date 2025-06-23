@@ -1,0 +1,11 @@
+{
+	"validation": {
+		"identifier": {
+			"isEmail": "Неверный формат почты",
+			"isPhoneNumber": "Неверный формат телефонного номера"
+		}
+	},
+	"exception": {
+		"invalidSession": "Невалидная сессия"
+	}
+}

@@ -9,10 +9,9 @@ import { verify } from 'argon2';
 import type { Request } from 'express';
 import { I18nService } from 'nestjs-i18n';
 
-import { PrismaService } from '@/core/database/prisma/prisma.service';
-import { RedisService } from '@/core/redis/redis.service';
+import { PrismaService } from '@/core/database';
 
-import { LoginInput } from './inputs/login.input';
+import { LoginInput } from './inputs';
 
 @Injectable()
 export class SessionService {
@@ -21,8 +20,7 @@ export class SessionService {
 	public constructor(
 		private readonly prismaService: PrismaService,
 		private readonly configService: ConfigService,
-		private readonly i18n: I18nService,
-		private readonly redisService: RedisService
+		private readonly i18n: I18nService
 	) {}
 
 	public async login(req: Request, input: LoginInput): Promise<Account> {
@@ -93,15 +91,7 @@ export class SessionService {
 	}
 
 	public async checkAuth(req: Request, accountId: string): Promise<boolean> {
-		if (!req.session) {
-			return false;
-		}
-
-		if (!req.session?.accountId) {
-			return false;
-		}
-
-		if (req.session.accountId !== accountId) {
+		if (!req.session?.accountId && req.session.accountId !== accountId) {
 			return false;
 		}
 
